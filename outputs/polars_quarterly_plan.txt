@@ -1,0 +1,10 @@
+SORT BY [col("REPDTE")]
+   WITH_COLUMNS:
+   [(col("equity") / col("assets")).alias("equity_assets")] 
+    AGGREGATE[maintain_order: false]
+      [len().alias("banks"), col("EQ").sum().alias("equity"), col("ASSET").sum().alias("assets")] BY [col("REPDTE")]
+      FROM
+      Parquet SCAN [C:/Users/LENOVO/Downloads/bft65b-fdic/data_processed/financial_panel.parquet]
+      PROJECT 3/33 COLUMNS
+      SELECTION: ((col("ASSET") > 0.0) & col("EQ").is_not_null()) & col("REPDTE").is_between([1984-03-31, 2007-12-31])
+      ESTIMATED ROWS: 1682738

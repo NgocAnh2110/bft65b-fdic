@@ -1,0 +1,131 @@
+== Physical Plan ==
+AdaptiveSparkPlan (22)
++- == Final Plan ==
+   ResultQueryStage (14)
+   +- * Sort (13)
+      +- AQEShuffleRead (12)
+         +- ShuffleQueryStage (11), Statistics(sizeInBytes=4.5 KiB, rowCount=96)
+            +- Exchange (10)
+               +- * Project (9)
+                  +- * HashAggregate (8)
+                     +- AQEShuffleRead (7)
+                        +- ShuffleQueryStage (6), Statistics(sizeInBytes=3.8 KiB, rowCount=96)
+                           +- Exchange (5)
+                              +- * HashAggregate (4)
+                                 +- * Filter (3)
+                                    +- * ColumnarToRow (2)
+                                       +- Scan parquet  (1)
++- == Initial Plan ==
+   Sort (21)
+   +- Exchange (20)
+      +- Project (19)
+         +- HashAggregate (18)
+            +- Exchange (17)
+               +- HashAggregate (16)
+                  +- Filter (15)
+                     +- Scan parquet  (1)
+
+
+(1) Scan parquet 
+Output [3]: [REPDTE#1, ASSET#3, EQ#6]
+Batched: true
+Location: InMemoryFileIndex [file:/C:/Users/LENOVO/Downloads/bft65b-fdic/data_processed/financial_panel.parquet]
+PushedFilters: [IsNotNull(REPDTE), IsNotNull(ASSET), GreaterThanOrEqual(REPDTE,1984-03-31), LessThanOrEqual(REPDTE,2007-12-31), IsNotNull(EQ), GreaterThan(ASSET,0.0)]
+ReadSchema: struct<REPDTE:date,ASSET:double,EQ:double>
+
+(2) ColumnarToRow [codegen id : 1]
+Input [3]: [REPDTE#1, ASSET#3, EQ#6]
+
+(3) Filter [codegen id : 1]
+Input [3]: [REPDTE#1, ASSET#3, EQ#6]
+Condition : (((((isnotnull(REPDTE#1) AND isnotnull(ASSET#3)) AND (REPDTE#1 >= 1984-03-31)) AND (REPDTE#1 <= 2007-12-31)) AND isnotnull(EQ#6)) AND (ASSET#3 > 0.0))
+
+(4) HashAggregate [codegen id : 1]
+Input [3]: [REPDTE#1, ASSET#3, EQ#6]
+Keys [1]: [REPDTE#1]
+Functions [3]: [partial_count(1), partial_sum(EQ#6), partial_sum(ASSET#3)]
+Aggregate Attributes [3]: [count#44L, sum#45, sum#46]
+Results [4]: [REPDTE#1, count#47L, sum#48, sum#49]
+
+(5) Exchange
+Input [4]: [REPDTE#1, count#47L, sum#48, sum#49]
+Arguments: hashpartitioning(REPDTE#1, 4), ENSURE_REQUIREMENTS, [plan_id=55]
+
+(6) ShuffleQueryStage
+Output [4]: [REPDTE#1, count#47L, sum#48, sum#49]
+Arguments: 0
+
+(7) AQEShuffleRead
+Input [4]: [REPDTE#1, count#47L, sum#48, sum#49]
+Arguments: coalesced
+
+(8) HashAggregate [codegen id : 2]
+Input [4]: [REPDTE#1, count#47L, sum#48, sum#49]
+Keys [1]: [REPDTE#1]
+Functions [3]: [count(1), sum(EQ#6), sum(ASSET#3)]
+Aggregate Attributes [3]: [count(1)#40L, sum(EQ#6)#41, sum(ASSET#3)#42]
+Results [4]: [REPDTE#1, count(1)#40L AS banks#34L, sum(EQ#6)#41 AS equity#35, sum(ASSET#3)#42 AS assets#36]
+
+(9) Project [codegen id : 2]
+Output [5]: [REPDTE#1, banks#34L, equity#35, assets#36, (equity#35 / assets#36) AS equity_assets#43]
+Input [4]: [REPDTE#1, banks#34L, equity#35, assets#36]
+
+(10) Exchange
+Input [5]: [REPDTE#1, banks#34L, equity#35, assets#36, equity_assets#43]
+Arguments: rangepartitioning(REPDTE#1 ASC NULLS FIRST, 4), ENSURE_REQUIREMENTS, [plan_id=93]
+
+(11) ShuffleQueryStage
+Output [5]: [REPDTE#1, banks#34L, equity#35, assets#36, equity_assets#43]
+Arguments: 1
+
+(12) AQEShuffleRead
+Input [5]: [REPDTE#1, banks#34L, equity#35, assets#36, equity_assets#43]
+Arguments: coalesced
+
+(13) Sort [codegen id : 3]
+Input [5]: [REPDTE#1, banks#34L, equity#35, assets#36, equity_assets#43]
+Arguments: [REPDTE#1 ASC NULLS FIRST], true, 0
+
+(14) ResultQueryStage
+Output [5]: [REPDTE#1, banks#34L, equity#35, assets#36, equity_assets#43]
+Arguments: 2
+
+(15) Filter
+Input [3]: [REPDTE#1, ASSET#3, EQ#6]
+Condition : (((((isnotnull(REPDTE#1) AND isnotnull(ASSET#3)) AND (REPDTE#1 >= 1984-03-31)) AND (REPDTE#1 <= 2007-12-31)) AND isnotnull(EQ#6)) AND (ASSET#3 > 0.0))
+
+(16) HashAggregate
+Input [3]: [REPDTE#1, ASSET#3, EQ#6]
+Keys [1]: [REPDTE#1]
+Functions [3]: [partial_count(1), partial_sum(EQ#6), partial_sum(ASSET#3)]
+Aggregate Attributes [3]: [count#44L, sum#45, sum#46]
+Results [4]: [REPDTE#1, count#47L, sum#48, sum#49]
+
+(17) Exchange
+Input [4]: [REPDTE#1, count#47L, sum#48, sum#49]
+Arguments: hashpartitioning(REPDTE#1, 4), ENSURE_REQUIREMENTS, [plan_id=27]
+
+(18) HashAggregate
+Input [4]: [REPDTE#1, count#47L, sum#48, sum#49]
+Keys [1]: [REPDTE#1]
+Functions [3]: [count(1), sum(EQ#6), sum(ASSET#3)]
+Aggregate Attributes [3]: [count(1)#40L, sum(EQ#6)#41, sum(ASSET#3)#42]
+Results [4]: [REPDTE#1, count(1)#40L AS banks#34L, sum(EQ#6)#41 AS equity#35, sum(ASSET#3)#42 AS assets#36]
+
+(19) Project
+Output [5]: [REPDTE#1, banks#34L, equity#35, assets#36, (equity#35 / assets#36) AS equity_assets#43]
+Input [4]: [REPDTE#1, banks#34L, equity#35, assets#36]
+
+(20) Exchange
+Input [5]: [REPDTE#1, banks#34L, equity#35, assets#36, equity_assets#43]
+Arguments: rangepartitioning(REPDTE#1 ASC NULLS FIRST, 4), ENSURE_REQUIREMENTS, [plan_id=31]
+
+(21) Sort
+Input [5]: [REPDTE#1, banks#34L, equity#35, assets#36, equity_assets#43]
+Arguments: [REPDTE#1 ASC NULLS FIRST], true, 0
+
+(22) AdaptiveSparkPlan
+Output [5]: [REPDTE#1, banks#34L, equity#35, assets#36, equity_assets#43]
+Arguments: isFinalPlan=true
+
+

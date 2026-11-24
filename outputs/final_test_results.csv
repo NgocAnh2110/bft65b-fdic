@@ -1,0 +1,2 @@
+test_rows,positive_quarters,AP_baseline,AP_logistic,alarms,false_alarms,true_positive_quarters,missed_positive_quarters,quarter_precision_pct,quarter_recall_pct,failure_events,detected_events,missed_events,event_recall_pct,total_proxy_cost
+178642,1650,0.3814606803584242,0.3411706865728402,3047,2031,1016,634,33.34427305546439,61.57575757575758,469,403,66,85.9275053304904,12296033.383237053

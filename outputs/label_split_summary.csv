@@ -1,0 +1,5 @@
+split,bank_quarters,positive_quarters,distinct_first_failures,positive_pct
+development,1228552,8759,2315,0.713
+gap,34003,355,163,1.044
+outside_split,222801,129,36,0.058
+test,178642,1650,469,0.924

@@ -1,0 +1,6 @@
+feature,development_rows,missing_rows,missing_pct
+log_assets_lag1,1228552,23836,1.94
+equity_assets_lag1,1228552,26674,2.171
+deposits_assets_lag1,1228552,23837,1.94
+reserves_loans_lag1,1228552,37706,3.069
+roa_lag1,1228552,23836,1.94

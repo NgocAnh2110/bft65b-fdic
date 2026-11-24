@@ -1,0 +1,3 @@
+period,first_report,last_report,positive_bank_quarters,distinct_failure_events
+Development,1984-03-31,2007-12-31,8769,2318
+Test,2009-03-31,2014-12-31,1650,469

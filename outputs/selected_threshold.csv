@@ -1,0 +1,2 @@
+scenario,fa_fraction,fa_unit_cost,score_threshold,alarms,false_alarms,detected_events,missed_events,event_recall_pct,total_proxy_cost
+main,0.01,101.53252055000002,-0.049300609877101324,16444,14414,723,96,88.27838827838828,20654633.120917104
