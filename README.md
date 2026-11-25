@@ -41,7 +41,19 @@ foreach ($step in $steps) {
   if ($LASTEXITCODE -ne 0) { throw "Failed at $step" }
 }
 ```
+### Reproducibility checks
 
+The scikit-learn logistic regression uses `random_state=42` in both
+`validate_development.py` and `evaluate_final_test.py`. Validation folds
+and the held-out test period use fixed calendar dates. The Spark MLlib
+demo uses the third development fold.
+
+| Output file | Expected result for the audited snapshot |
+|---|---|
+| `outputs/panel_key_checks.csv` | 1,682,738 bank-quarter rows and no duplicate bank-quarter keys |
+| `outputs/selected_threshold.csv` | Main alert cutoff equivalent to approximately 4.93% lagged equity-to-assets |
+| `outputs/final_test_results.csv` | 3,047 alerts, 2,031 false alarms and 403 of 469 failures detected |
+| `outputs/spark_mllib_demo.csv` | 180,160 validation rows, 74 positives and areaUnderPR of 0.009676 |
 Some checks use counts from the audited snapshot. If FDIC revises historical records, inspect discrepancies before changing these checks. The storage benchmark temporarily creates an uncompressed CSV copy of approximately 404 MB.
 
 ## Data and validation design
