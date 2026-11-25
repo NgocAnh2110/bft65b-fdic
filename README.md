@@ -78,6 +78,10 @@ The `outputs/` directory contains aggregate audit tables, execution plans, bench
 - Apache Parquet. *Overview*. https://parquet.apache.org/docs/overview/
 - Federal Deposit Insurance Corporation. BankFind Suite API and field definitions. https://api.fdic.gov/banks/docs/
 - Federal Deposit Insurance Corporation. *BankFind Suite: Bank Structure Changes*. https://banks.data.fdic.gov/bankfind-suite/oscr
+- Polars. *Optimizations*. Polars User Guide. https://docs.pola.rs/user-guide/lazy/optimizations/
+- Apache Spark. *EXPLAIN*. Spark 4.1.1 SQL Reference. https://spark.apache.org/docs/4.1.1/sql-ref-syntax-qry-explain.html
+- scikit-learn. *Common pitfalls and recommended practices*, section “Data leakage.” https://scikit-learn.org/stable/common_pitfalls.html#data-leakage
+- scikit-learn. *average_precision_score*. https://scikit-learn.org/stable/modules/generated/sklearn.metrics.average_precision_score.html
 - National Economics University. BFT65B individual report assignment and course-provided `fdic_download_starter.py`.
 - BFT65B lecture notebooks and slides. https://github.com/ntlong-NEU/big_data_analysis4Fin
 - OpenAI ChatGPT assisted with code drafting, troubleshooting, interpretation and report wording. The numerical results were obtained by running the scripts locally.
