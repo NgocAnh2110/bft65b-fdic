@@ -75,6 +75,7 @@ The `outputs/` directory contains aggregate audit tables, execution plans, bench
 
 ## Sources and AI disclosure
 
+- Apache Parquet. *Overview*. https://parquet.apache.org/docs/overview/
 - Federal Deposit Insurance Corporation. BankFind Suite API and field definitions. https://api.fdic.gov/banks/docs/
 - National Economics University. BFT65B individual report assignment and course-provided `fdic_download_starter.py`.
 - BFT65B lecture notebooks and slides. https://github.com/ntlong-NEU/big_data_analysis4Fin
