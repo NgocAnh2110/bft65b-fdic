@@ -1,0 +1,5 @@
+check,panel_rows,flagged_rows,flagged_banks
+ASSET <= 0,1682738,0,0
+EQ > ASSET,1682738,1,1
+EQ < 0,1682738,15647,2845
+LNLSGR <= 0,1682738,19071,950

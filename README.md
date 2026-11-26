@@ -97,3 +97,42 @@ The `outputs/` directory contains aggregate audit tables, execution plans, bench
 - National Economics University. BFT65B individual report assignment and course-provided `fdic_download_starter.py`.
 - BFT65B lecture notebooks and slides. https://github.com/ntlong-NEU/big_data_analysis4Fin
 - OpenAI ChatGPT assisted with code drafting, troubleshooting, interpretation and report wording. The numerical results were obtained by running the scripts locally.
+
+## Reproduce the supplementary analyses
+
+After running the main pipeline, open PowerShell in the repository root and run the scripts below in order. Use the project virtual environment. The memory benchmarks measure peak process memory on Windows.
+
+```powershell
+$py = (Resolve-Path '.\.venv\Scripts\python.exe').Path
+$steps = @(
+    'benchmark_parquet_codecs',
+    'audit_ranges_and_merger_dates',
+    'check_lag_join_engines',
+    'benchmark_lag_join_24q',
+    'benchmark_lag_join_scaling',
+    'benchmark_labels_96q',
+    'benchmark_spark_lag_join',
+    'plot_lag_join_scaling',
+    'build_extended_development_features',
+    'audit_extended_feature_values',
+    'compare_logistic_clipping',
+    'validate_extended_models',
+    'audit_frozen_baseline_uncertainty'
+)
+foreach ($step in $steps) {
+    & $py ".\$step.py"
+    if ($LASTEXITCODE -ne 0) { throw "Failed at $step" }
+}
+```
+
+### Expected results for the audited snapshot
+
+| Output in `outputs/` | Result |
+|---|---|
+| `codec_benchmark.csv` | Across 170 quarters and 1,682,738 rows, Snappy used 248.26 MB and Zstandard used 197.04 MB. |
+| `merger_date_checks.csv` | Of 14,183 banks with change code 223, 13,907 had a dated merger within the audit window (98.05%). |
+| `lag_join_scaling.csv` and `lag_join_scaling.png` | At 96 quarters, pandas took 1.852 s and used 412.3 MiB. Polars took 0.656 s and used 546.3 MiB. Both produced 1,228,552 rows. |
+| `extended_model_validation.csv` | Gradient boosting achieved the highest AP in folds 1 and 2. Logistic regression with C = 0.01 achieved the highest AP in fold 3. |
+| `frozen_baseline_uncertainty.csv` | Held-out AP was 0.38146 and ROC-AUC was 0.94814. The 95% bank-level bootstrap interval for AP was 0.34285–0.43021 (500 draws, seed 42). |
+
+The extended models were compared on development folds only. The uncertainty analysis reproduced the original test AP for the frozen capital rule before resampling banks. Runtime and memory depend on the machine. The merger audit uses the live FDIC BankFind Suite history endpoint, so later FDIC revisions may change the number of matched records.

@@ -18,3 +18,6 @@ scipy==1.18.1
 threadpoolctl==3.8.0
 tzdata==2026.6
 urllib3==2.8.0
+
+matplotlib==3.11.2
+psutil==7.2.2

@@ -1,0 +1,4 @@
+feature,available_rows,missing_rows,coverage_pct
+noncurrent_loans_lag1,1191179,37373,96.96
+tier1_leverage_lag1,1204716,23836,98.06
+change_equity_assets_lag1,1178338,50214,95.91
